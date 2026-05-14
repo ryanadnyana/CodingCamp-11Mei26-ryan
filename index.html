@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker</title>
+    <!-- Preload CSS to avoid render-blocking -->
+    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+</head>
+<body>
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="app-logo">
+                <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+                    <rect width="28" height="28" rx="8" fill="#0071e3"/>
+                    <path d="M7 14h14M14 7v14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+                <span class="app-name">Budget Tracker</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle" title="Ganti tema">
+                <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Balance Summary -->
+        <div class="balance-card">
+            <div class="balance-row">
+                <div class="balance-item">
+                    <p class="balance-label">Pemasukan</p>
+                    <p class="balance-income" id="totalIncome">Rp 0</p>
+                </div>
+                <div class="balance-divider"></div>
+                <div class="balance-item">
+                    <p class="balance-label">Pengeluaran</p>
+                    <p class="balance-expense" id="totalExpense">Rp 0</p>
+                </div>
+            </div>
+            <div class="balance-net-row">
+                <p class="balance-label">Saldo Bersih</p>
+                <p class="balance-net" id="totalBalance">Rp 0</p>
+            </div>
+            <p class="balance-sub" id="transactionCount">0 transaksi</p>
+            <p class="balance-period" id="balancePeriod"></p>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="sidebar-section">
+            <p class="sidebar-section-title">Per Kategori</p>
+            <div id="categoryBreakdown" class="category-breakdown">
+                <p class="empty-hint">Belum ada data</p>
+            </div>
+        </div>
+
+        <!-- Manage Categories -->
+        <div class="sidebar-section">
+            <p class="sidebar-section-title">Kelola Kategori</p>
+            <div class="add-category-form">
+                <input type="text" id="newCategoryInput" placeholder="Nama kategori baru" maxlength="30">
+                <button class="btn-add-category" id="addCategoryBtn">+</button>
+            </div>
+            <p class="category-error" id="categoryError"></p>
+            <div id="customCategoryList" class="custom-category-list"></div>
+        </div>
+    </aside>
+
+    <!-- ===================== MAIN ===================== -->
+    <div class="main-wrapper">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <h1 class="page-title">Transaksi</h1>
+        </header>
+
+        <div class="content-grid">
+
+            <!-- Left Column -->
+            <div class="left-col">
+
+                <!-- Add Transaction -->
+                <section class="card">
+                    <h2 class="card-title">Tambah Transaksi</h2>
+
+                    <!-- Type Toggle -->
+                    <div class="type-toggle">
+                        <button class="type-btn active" id="btnExpense" data-type="expense">Pengeluaran</button>
+                        <button class="type-btn" id="btnIncome" data-type="income">Pemasukan</button>
+                    </div>
+
+                    <form id="transactionForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="itemName">Nama Item</label>
+                                <input type="text" id="itemName" placeholder="Contoh: Makan siang, Gaji" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="amountDisplay">Nominal (Rp)</label>
+                                <input type="text" id="amountDisplay" placeholder="0" inputmode="numeric" autocomplete="off">
+                                <input type="hidden" id="amountHidden">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Kategori</label>
+                            <select id="category">
+                                <option value="">Pilih kategori</option>
+                            </select>
+                        </div>
+                        <p class="form-error" id="formError"></p>
+                        <button type="submit" class="btn-primary" id="submitBtn">Tambah Pengeluaran</button>
+                    </form>
+                </section>
+
+                <!-- Chart -->
+                <section class="card">
+                    <h2 class="card-title">Distribusi Pengeluaran</h2>
+                    <div class="chart-wrap" id="chartWrap">
+                        <canvas id="spendingChart"></canvas>
+                    </div>
+                    <div id="noDataMessage" class="no-data-chart">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <p>Belum ada data pengeluaran</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-col">
+                <section class="card card-full">
+
+                    <!-- List Header with controls -->
+                    <div class="list-header">
+                        <div class="list-header-top">
+                            <h2 class="card-title">Riwayat Transaksi</h2>
+                            <span class="list-count" id="listCount"></span>
+                        </div>
+
+                        <!-- Filter & Sort Controls -->
+                        <div class="controls-bar">
+                            <div class="control-group">
+                                <label class="control-label">Periode</label>
+                                <select id="periodFilter" class="control-select">
+                                    <option value="all">Semua</option>
+                                    <option value="today">Hari Ini</option>
+                                    <option value="week">Minggu Ini</option>
+                                    <option value="month">Bulan Ini</option>
+                                    <option value="pick">Pilih Bulan...</option>
+                                </select>
+                            </div>
+                            <div class="control-group control-group-month" id="monthPickerGroup">
+                                <label class="control-label">Bulan</label>
+                                <select id="monthFilter" class="control-select">
+                                    <option value="">— pilih —</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Tipe</label>
+                                <select id="typeFilter" class="control-select">
+                                    <option value="all">Semua</option>
+                                    <option value="expense">Pengeluaran</option>
+                                    <option value="income">Pemasukan</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Urutkan</label>
+                                <select id="sortSelect" class="control-select">
+                                    <option value="date-desc">Terbaru</option>
+                                    <option value="date-asc">Terlama</option>
+                                    <option value="amount-desc">Nominal Terbesar</option>
+                                    <option value="amount-asc">Nominal Terkecil</option>
+                                    <option value="category-asc">Kategori A–Z</option>
+                                    <option value="category-desc">Kategori Z–A</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="transactionList" class="transaction-list">
+                        <div class="empty-state">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.2">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                            <p>Belum ada transaksi</p>
+                            <span>Tambahkan transaksi pertama kamu</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="js/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
