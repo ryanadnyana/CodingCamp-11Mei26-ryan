@@ -1,10 +1,10 @@
-# 💰 Budget Tracker
+# Budget Tracker
 
-Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluaran pribadi. Dibangun dengan JavaScript murni tanpa framework, dilengkapi ringkasan saldo real-time, grafik donat interaktif, filter periode fleksibel, serta dukungan tema gelap dan terang — tanpa instalasi atau server.
+Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluaran pribadi. Dibangun dengan JavaScript murni tanpa framework, dilengkapi ringkasan saldo real-time, grafik donat interaktif, filter periode fleksibel, serta dukungan tema gelap dan terang tanpa instalasi atau server.
 
 ---
 
-## 📸 Tangkapan Layar
+## Screenshot
 
 | Tampilan Terang | Tampilan Gelap |
 |---|---|
@@ -12,7 +12,7 @@ Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluara
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
 ### Transaksi
 - Tambah transaksi **pemasukan** atau **pengeluaran** dengan nama, nominal, dan kategori
@@ -50,7 +50,7 @@ Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluara
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 | Teknologi | Kegunaan |
 |---|---|
@@ -62,16 +62,14 @@ Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluara
 
 ---
 
-## 🚀 Cara Menjalankan
+## Cara Menjalankan
 
 ### Prasyarat
 - Browser modern (Chrome, Firefox, Edge, atau Safari)
 - Tidak memerlukan build tool, package manager, atau koneksi internet
 
 ### Langkah-langkah
-1. Clone atau unduh repositori ini
-2. Buka file `index.html` langsung di browser
-3. Mulai mencatat transaksi
+1. Klik [link](https://ryanadnyana.github.io/CodingCamp-11Mei26-ryan/) ini
 
 ### Struktur Folder
 ```
@@ -87,7 +85,7 @@ budgetVisualitation/
 
 ---
 
-## 📱 Cara Penggunaan
+## Cara Penggunaan
 
 ### Menambah Transaksi
 1. Pilih **Pengeluaran** atau **Pemasukan** menggunakan tombol toggle
@@ -108,13 +106,13 @@ budgetVisualitation/
 
 ---
 
-## 🔒 Privasi
+## Privasi
 
 Semua data tersimpan secara lokal di Local Storage browser kamu. Tidak ada data yang dikirim ke server mana pun.
 
 ---
 
-## 💡 Pengembangan Selanjutnya
+## Pengembangan Selanjutnya
 
 - Ekspor transaksi ke CSV atau PDF
 - Notifikasi batas pengeluaran per kategori
@@ -124,6 +122,6 @@ Semua data tersimpan secara lokal di Local Storage browser kamu. Tidak ada data 
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini bersifat open source dan tersedia untuk keperluan edukasi.
