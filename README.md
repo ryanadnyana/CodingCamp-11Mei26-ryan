@@ -6,11 +6,9 @@ Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluara
 
 ## 📸 Tangkapan Layar
 
-> Tambahkan tangkapan layar kamu di sini. Seret gambar ke bagian ini atau gunakan format di bawah.
-
 | Tampilan Terang | Tampilan Gelap |
 |---|---|
-| ![Tangkapan layar mode terang](screenshots/mode-terang.png) | ![Tangkapan layar mode gelap](screenshots/mode-gelap.png) |
+| ![Tangkapan layar mode terang](assets/lightTheme.png) | ![Tangkapan layar mode gelap](assets/darkTheme.png) |
 
 ---
 
