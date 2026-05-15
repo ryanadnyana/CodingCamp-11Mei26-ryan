@@ -1,127 +1,138 @@
 # Budget Tracker
 
-Aplikasi web satu halaman yang responsif untuk mencatat pemasukan dan pengeluaran pribadi. Dibangun dengan JavaScript murni tanpa framework, dilengkapi ringkasan saldo real-time, grafik donat interaktif, filter periode fleksibel, serta dukungan tema gelap dan terang tanpa instalasi atau server.
+A single-page personal finance web app for tracking income and expenses. Built with vanilla JavaScript no frameworks, no build tools, no server required.
+
+Live demo: [ryanadnyana.github.io/CodingCamp-11Mei26-ryan](https://ryanadnyana.github.io/CodingCamp-11Mei26-ryan/)
 
 ---
 
-## Screenshot
+## Screenshots
 
-| Tampilan Terang | Tampilan Gelap |
+| Light Mode | Dark Mode |
 |---|---|
-| ![Tangkapan layar mode terang](assets/lightTheme.png) | ![Tangkapan layar mode gelap](assets/darkTheme.png) |
+| ![Light mode](assets/lightTheme.png) | ![Dark mode](assets/darkTheme.png) |
 
 ---
 
-## Fitur Utama
+## Features
 
-### Transaksi
-- Tambah transaksi **pemasukan** atau **pengeluaran** dengan nama, nominal, dan kategori
-- Format Rupiah otomatis dengan pemisah ribuan saat mengetik
-- Hapus transaksi kapan saja — saldo dan grafik langsung diperbarui
-- Semua data tersimpan di **Local Storage** browser (tidak perlu server)
+### Transactions
+- Add income or expense transactions with a name, amount, and category
+- Amount field formats automatically with thousand separators (IDR) as you type, with support for decimal values (e.g. 123.456,78)
+- Delete any transaction — the balance summary and chart update instantly
+- All data is stored in the browser's Local Storage; nothing is sent to a server
 
-### Ringkasan Saldo
-- Menampilkan total **pemasukan**, total **pengeluaran**, dan **saldo bersih** secara real-time
-- Saldo bersih berubah merah ketika pengeluaran melebihi pemasukan
+### Balance Summary
+- Displays total income, total expenses, and net balance in real time
+- Net balance turns red when expenses exceed income
+- Balance values can be hidden or shown using the eye button — preference is saved across sessions
+- Large amounts scale down automatically to prevent overflow in the sidebar
 
-### Filter & Pengurutan
-- Filter berdasarkan periode: **Semua**, **Hari Ini**, **Minggu Ini**, **Bulan Ini**, atau pilih bulan tertentu
-- Filter berdasarkan tipe: **Semua**, **Pengeluaran**, atau **Pemasukan**
-- Urutkan berdasarkan: **Terbaru**, **Terlama**, **Nominal Terbesar**, **Nominal Terkecil**, **Kategori A–Z / Z–A**
+### Filtering and Sorting
+- Filter by period: All, Today, This Week, This Month, or a specific month picked from history
+- Filter by type: All, Expense, or Income
+- Sort by: Newest, Oldest, Highest Amount, Lowest Amount, Category A–Z, Category Z–A
 
-### Grafik Pengeluaran
-- Grafik **donat interaktif** (Chart.js) yang menampilkan distribusi pengeluaran per kategori
-- Tooltip menampilkan nominal dan persentase setiap kategori
-- Grafik diperbarui otomatis saat transaksi ditambah atau dihapus
+### Spending Chart
+- Interactive doughnut chart (Chart.js) showing expense distribution by category
+- Tooltips show the amount and percentage for each category
+- Updates automatically when transactions are added or deleted
 
-### Manajemen Kategori
-- Kategori bawaan: `Makanan & Minuman`, `Transport`, `Hiburan`, `Gaji`
-- Tambah dan hapus **kategori kustom** dari sidebar
-- Setiap kategori mendapat warna unik yang konsisten di grafik dan daftar transaksi
-- Kategori yang sedang digunakan oleh transaksi tidak dapat dihapus
+### Category Management
+- Built-in default categories: Food & Drinks, Transport, Entertainment, Salary
+- Add and delete custom categories from the sidebar
+- Each category is assigned a unique color used consistently across the chart and transaction list
+- Categories in use by existing transactions cannot be deleted
 
-### Tema Gelap / Terang
-- Ganti tema dengan satu klik melalui tombol di sidebar
-- Preferensi tema disimpan dan dipulihkan saat aplikasi dibuka kembali
+### Dark / Light Theme
+- Toggle between dark and light themes with a single click
+- Theme preference is saved and restored on next visit
 
-### Responsif
-- Layout sidebar + konten utama menyesuaikan semua ukuran layar
-- Tombol dan kontrol ramah sentuh untuk pengguna mobile
+### Responsive Layout
+- Sidebar and main content layout adapts to all screen sizes
+- On mobile, the three main panels (Add Transaction, Chart, Transaction History) can be reordered by dragging the handle at the top of each panel
+- Panel order is saved and restored across sessions
+
+### Favicon
+- The app icon appears in the browser tab, using an inline SVG no external file needed
 
 ---
 
-## Teknologi yang Digunakan
+## Technology Stack
 
-| Teknologi | Kegunaan |
+| Technology | Purpose |
 |---|---|
-| HTML5 | Struktur dan semantik halaman |
-| CSS3 | Tampilan, variabel CSS untuk tema, layout responsif |
-| JavaScript (ES6+) | Seluruh logika aplikasi — tanpa framework |
-| [Chart.js](https://www.chartjs.org/) | Visualisasi grafik donat (disertakan secara lokal) |
-| Local Storage API | Penyimpanan data di sisi klien |
+| HTML5 | Page structure |
+| CSS3 | Styling, CSS custom properties for theming, responsive layout |
+| JavaScript (ES6+) | All application logic, no frameworks |
+| [Chart.js](https://www.chartjs.org/) | Doughnut chart (bundled locally) |
+| Local Storage API | Client-side data persistence |
 
 ---
 
-## Cara Menjalankan
+## Getting Started
 
-### Prasyarat
-- Browser modern (Chrome, Firefox, Edge, atau Safari)
-- Tidak memerlukan build tool, package manager, atau koneksi internet
+### Requirements
+- Any modern browser (Chrome, Firefox, Edge, or Safari)
+- No installation, package manager, or internet connection required
 
-### Langkah-langkah
-1. Klik [link](https://ryanadnyana.github.io/CodingCamp-11Mei26-ryan/) ini
+### Running Locally
+1. Clone or download this repository
+2. Open `index.html` directly in your browser
 
-### Struktur Folder
+### Folder Structure
 ```
 budgetVisualitation/
-├── index.html              # File HTML utama
+├── index.html              # Main HTML file
 ├── css/
-│   └── style.css           # Semua gaya dan variabel tema
+│   └── style.css           # All styles and theme variables
 ├── js/
-│   ├── app.js              # Seluruh logika aplikasi
-│   └── chart.umd.min.js    # Chart.js (bundel lokal)
-└── README.md               # File ini
+│   ├── app.js              # All application logic
+│   └── chart.umd.min.js    # Bundled Chart.js
+├── assets/                 # Screenshots
+└── README.md
 ```
 
 ---
 
-## Cara Penggunaan
+## Usage
 
-### Menambah Transaksi
-1. Pilih **Pengeluaran** atau **Pemasukan** menggunakan tombol toggle
-2. Isi nama item (contoh: `Makan siang`, `Gaji bulanan`)
-3. Masukkan nominal — format Rupiah otomatis saat mengetik
-4. Pilih kategori dari dropdown
-5. Klik tombol tambah
+### Adding a Transaction
+1. Select Expense or Income using the toggle at the top of the form
+2. Enter the item name
+3. Enter the amount it formats automatically as you type
+4. Select a category from the dropdown
+5. Click the submit button
 
-### Memfilter Transaksi
-- Gunakan dropdown **Periode** untuk mempersempit rentang waktu
-- Pilih **Pilih Bulan...** untuk memilih bulan tertentu dari riwayat
-- Gunakan dropdown **Tipe** untuk menampilkan hanya pengeluaran atau pemasukan
+### Filtering Transactions
+- Use the Period dropdown to narrow by time range
+- Select "Pick Month..." to choose a specific month from your history
+- Use the Type dropdown to show only expenses or income
 
-### Mengelola Kategori
-- Ketik nama kategori baru di input sidebar lalu klik **+** atau tekan Enter
-- Klik tombol **×** di samping kategori kustom untuk menghapusnya
-- Kategori yang masih digunakan oleh transaksi tidak bisa dihapus
+### Managing Categories
+- Type a new category name in the sidebar input and click + or press Enter
+- Click the x button next to any custom category to delete it
+- Categories used by existing transactions cannot be deleted
 
----
-
-## Privasi
-
-Semua data tersimpan secara lokal di Local Storage browser kamu. Tidak ada data yang dikirim ke server mana pun.
+### Hiding the Balance
+- Click the eye icon in the balance card header to mask all balance values
+- Click again to reveal them
 
 ---
 
-## Pengembangan Selanjutnya
+## Privacy
 
-- Ekspor transaksi ke CSV atau PDF
-- Notifikasi batas pengeluaran per kategori
-- Tampilan ringkasan bulanan / analitik
-- Dukungan multi-mata uang
-- Dukungan PWA untuk penggunaan offline dan instalasi ke layar utama
+All data is stored locally in your browser's Local Storage. No data is transmitted to any server.
 
 ---
 
-## Lisensi
+## Possible Future Improvements
+- Spending limit alerts per category
+- Monthly summary and analytics view
+- Multi-currency support
 
-Proyek ini bersifat open source dan tersedia untuk keperluan edukasi.
+---
+
+## License
+
+Open source, available for educational use.
