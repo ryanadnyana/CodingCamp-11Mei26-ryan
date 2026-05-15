@@ -138,6 +138,44 @@ body {
     flex-shrink: 0;
 }
 
+/* Header row: title + eye toggle */
+.balance-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.balance-card-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    opacity: 0.7;
+}
+
+.btn-toggle-balance {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.btn-toggle-balance:hover { background: rgba(255,255,255,0.22); }
+
+/* Show correct eye icon based on state */
+.balance-card .icon-eye-closed { display: none; }
+.balance-card.hidden-balance .icon-eye-open  { display: none; }
+.balance-card.hidden-balance .icon-eye-closed { display: block; }
+
 .balance-row {
     display: flex;
     align-items: stretch;
@@ -145,12 +183,16 @@ body {
     margin-bottom: 14px;
 }
 
-.balance-item { flex: 1; }
+.balance-item {
+    flex: 1;
+    min-width: 0; /* allow shrinking */
+}
 
 .balance-divider {
     width: 1px;
     background: rgba(255,255,255,0.25);
     margin: 0 14px;
+    flex-shrink: 0;
 }
 
 .balance-label {
@@ -163,17 +205,23 @@ body {
 }
 
 .balance-income {
-    font-size: 15px;
+    font-size: clamp(11px, 2.8vw, 15px);
     font-weight: 700;
     color: #a8f5b8;
     letter-spacing: -0.3px;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
 }
 
 .balance-expense {
-    font-size: 15px;
+    font-size: clamp(11px, 2.8vw, 15px);
     font-weight: 700;
     color: #ffb3ae;
     letter-spacing: -0.3px;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
 }
 
 .balance-net-row {
@@ -183,11 +231,13 @@ body {
 }
 
 .balance-net {
-    font-size: 24px;
+    font-size: clamp(16px, 4vw, 24px);
     font-weight: 700;
     letter-spacing: -0.5px;
     line-height: 1.2;
     margin-top: 3px;
+    word-break: break-all;
+    overflow-wrap: anywhere;
 }
 
 .balance-net.negative { color: #ffb3ae; }
@@ -202,6 +252,15 @@ body {
     font-size: 11px;
     opacity: 0.65;
     margin-top: 1px;
+}
+
+/* Hidden balance state — replace values with dots */
+.balance-card.hidden-balance .balance-income,
+.balance-card.hidden-balance .balance-expense,
+.balance-card.hidden-balance .balance-net {
+    letter-spacing: 2px;
+    word-break: normal;
+    overflow-wrap: normal;
 }
 
 /* ---- Sidebar Sections ---- */
@@ -783,7 +842,6 @@ body {
 @media (max-width: 900px) {
     :root { --sidebar-width: 240px; }
     .content-grid { grid-template-columns: 1fr; }
-    .balance-net  { font-size: 20px; }
 }
 
 /* ============================================================

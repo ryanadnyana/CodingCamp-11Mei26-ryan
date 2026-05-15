@@ -1,9 +1,10 @@
 // ============================================================
 // STORAGE KEYS
 // ============================================================
-const STORAGE_KEY    = 'budgetTracker_v3';
-const CATEGORIES_KEY = 'budgetTracker_categories';
-const THEME_KEY      = 'budgetTracker_theme';
+const STORAGE_KEY        = 'budgetTracker_v3';
+const CATEGORIES_KEY     = 'budgetTracker_categories';
+const THEME_KEY          = 'budgetTracker_theme';
+const BALANCE_HIDDEN_KEY = 'budgetTracker_balanceHidden';
 
 // ============================================================
 // STATE
@@ -15,6 +16,7 @@ let currentSort      = 'date-desc';
 let currentType      = 'expense';   // active form type
 let filterPeriod     = 'all';       // 'all' | 'today' | 'week' | 'month' | 'YYYY-MM'
 let filterType       = 'all';
+let balanceHidden    = false;       // whether balance values are masked
 
 // ============================================================
 // DEFAULT CATEGORIES
@@ -37,6 +39,7 @@ function init() {
     loadTheme();
     loadCategories();
     loadTransactions();
+    loadBalanceVisibility();
     setupEventListeners();
     rebuildCategorySelect();
     renderCustomCategoryList();
@@ -59,6 +62,37 @@ function toggleTheme() {
     localStorage.setItem(THEME_KEY, next);
     if (chart) { chart.destroy(); chart = null; }
     updateChart();
+}
+
+// ============================================================
+// BALANCE VISIBILITY (hide / show)
+// ============================================================
+function loadBalanceVisibility() {
+    balanceHidden = localStorage.getItem(BALANCE_HIDDEN_KEY) === 'true';
+    applyBalanceVisibility();
+}
+
+function applyBalanceVisibility() {
+    const card = document.querySelector('.balance-card');
+    const btn  = document.getElementById('toggleBalanceBtn');
+    if (!card || !btn) return;
+
+    if (balanceHidden) {
+        card.classList.add('hidden-balance');
+        btn.setAttribute('aria-label', 'Tampilkan saldo');
+        btn.title = 'Tampilkan saldo';
+    } else {
+        card.classList.remove('hidden-balance');
+        btn.setAttribute('aria-label', 'Sembunyikan saldo');
+        btn.title = 'Sembunyikan saldo';
+    }
+}
+
+function toggleBalanceVisibility() {
+    balanceHidden = !balanceHidden;
+    localStorage.setItem(BALANCE_HIDDEN_KEY, balanceHidden);
+    applyBalanceVisibility();
+    updateBalance(); // re-render values (masked or real)
 }
 
 // ============================================================
@@ -220,6 +254,7 @@ function setupAmountInput() {
 function setupEventListeners() {
     document.getElementById('transactionForm').addEventListener('submit', handleFormSubmit);
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('toggleBalanceBtn').addEventListener('click', toggleBalanceVisibility);
     document.getElementById('sortSelect').addEventListener('change', e => {
         currentSort = e.target.value;
         updateTransactionList();
@@ -471,6 +506,8 @@ function updateUI() {
 // ============================================================
 // BALANCE
 // ============================================================
+const BALANCE_MASK = '••••••';
+
 function updateBalance() {
     const scoped = getFilteredByPeriod(transactions);
 
@@ -478,13 +515,19 @@ function updateBalance() {
     const expense = scoped.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
     const net     = income - expense;
 
-    document.getElementById('totalIncome').textContent  = formatRupiah(income);
-    document.getElementById('totalExpense').textContent = formatRupiah(expense);
+    document.getElementById('totalIncome').textContent  = balanceHidden ? BALANCE_MASK : formatRupiah(income);
+    document.getElementById('totalExpense').textContent = balanceHidden ? BALANCE_MASK : formatRupiah(expense);
 
     const netEl = document.getElementById('totalBalance');
-    netEl.textContent = formatRupiah(Math.abs(net));
-    netEl.classList.toggle('negative', net < 0);
-    if (net < 0) netEl.textContent = '−' + formatRupiah(Math.abs(net));
+    if (balanceHidden) {
+        netEl.textContent = BALANCE_MASK;
+        netEl.classList.remove('negative');
+    } else {
+        netEl.classList.toggle('negative', net < 0);
+        netEl.textContent = net < 0
+            ? '−' + formatRupiah(Math.abs(net))
+            : formatRupiah(net);
+    }
 
     const count = scoped.length;
     document.getElementById('transactionCount').textContent =
